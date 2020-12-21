@@ -9,19 +9,19 @@ mongoose.connect(
   { useNewUrlParser: true, useUnifiedTopology: true },
   (err) => {
     if (!err) {
-      console.log("succes");
+      console.log("succes started database");
+      const app = express();
+      app.use(express.json());
+      const userRouter = require("./routes/userRoute");
+      app.use("/user", userRouter);
+      const taskRouter = require("./routes/taskRoute");
+      app.use("/task", taskRouter);
+
+      app.listen(process.env.PORT, () => {
+        console.log(`server started at port ${process.env.PORT}`);
+      });
     } else {
       console.log("err");
     }
   }
 );
-const app = express();
-
-const taskRouter = require("./routes/taskRoute");
-// const taskrouter = require("./routes/taskRoute");
-app.use("/task", taskRouter);
-
-
-app.listen(3000, () => {
-  console.log("server started at port 3000");
-});

@@ -3,7 +3,7 @@ const uniqid = require("uniqid");
 const bcrypt = require("bcrypt");
 const userSchema = mongoose.Schema(
   {
-    userId: {
+    userid: {
       type: String,
       default: "user" + uniqid(),
     },
@@ -15,14 +15,19 @@ const userSchema = mongoose.Schema(
       type: String,
       required: [true, "password is required"],
     },
+    confirmpassword: {
+      type: String,
+      required: [true, "required password is required"],
+    },
   },
+
   {
     timestamps: true,
   }
 );
 userSchema.method.generateHash = async function () {
   let salt = await bcrypt.genSalt(10);
-  let hash = await bcrypt.hash(this.password, hash);
+  let hash = await bcrypt.hash(this.password, this.confirmpassword, hash);
   return hash;
 };
 userSchema.pre("save", function (next) {

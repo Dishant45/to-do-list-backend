@@ -1,70 +1,73 @@
 const User = require("../models/userSchema");
-const User = require("../models/userSchema");
-const { findById } = require("../models/userSchema");
-const { createTask } = require("./taskController");
-const createUser = async(req, res) => {
-  await let user = new User({
-    userId: req.body.userId,
+const createUser = (req, res) => {
+  let User1 = new User({
     email: req.body.email,
     password: req.body.password,
-    timstamp: date.now(),
-    try{
-        await Task.save();
-    }
-    catch(err){
-        return err;
+    confirmpassword: req.body.confirmpassword,
+    if(err) {
+      res.send(err);
+      return err;
+      console.log(err);
+    },
+  });
+
+  User1.save();
+  res.send("user created");
+};
+const findAllUser = async (req, res, body) => {
+  await User.find((err, data) => {
+    try {
+      if (!err) {
+        res.send(data);
+      } else {
+        res.send(err);
+      }
+    } catch {
+      res.send(err);
     }
   });
 };
-const findAllUser= async(req,body)=>{
-    await User.find((err,data)=>{
-        try{
-            if(!err){
-                res.send(data);
-            }
-            else{
-                res.send(err);
-            }
-            catch{
-                res.send(err);
-            }
-        }
-    
-});
+
+const findUserById = async (req, res) => {
+  await User.findById({ _id: req.params._id }, (err, data) => {
+    try {
+      if (!err) {
+        res.send(data);
+      } else {
+        res.send(err);
+      }
+    } catch {
+      return err;
+    }
+  });
 };
 
-const findUserById= async (req,res) => {
-    await findById({userId:req.header.userid}(err,data)=>{
-        try{
-            if(err){
-                res.send(err);
-            }
-            else{
-                res.send(data);
-            }
-        }
-        catch{
-            return err;
-        }
-
+const updateUserById = (req, res) => {
+  const user = User.findByIdAndUpdate(
+    { _id: req.params._id },
+    { email: req.body.email },
+    (err, data) => {
+      if (err) {
+        res.send("could not update");
+      } else {
+        res.send("updated succesfully");
+      }
     }
+  );
+};
 
-}
-const updateUserById= async (req,res) => {
- try{
-        const user=await findById(req.param.email);
-        user.email=req.body.email;
-        const t2=await user.save();
-        
- }
- catch(err){
-     res.send(err);
- }
-
+const deleteUserById = (req, res) => {
+  const user = User.findByIdAndDelete({ _id: req.params._id }, (err, data) => {
+    if (err) {
+      res.send("user not deleted");
+    } else {
+      res.send("User deleted succesfully");
     }
+  });
+};
 
-
-module.exports.createUser=createTask;
-module.exports.findAllUser=findAllUser;
-module.exports.findUserById=findUserById;
-module.exports.updateUserById=updateUserById;
+module.exports.createUser = createUser;
+module.exports.findAllUser = findAllUser;
+module.exports.findUserById = findUserById;
+module.exports.updateUserById = updateUserById;
+module.exports.deleteUserById = deleteUserById;
