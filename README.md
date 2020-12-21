@@ -27,3 +27,12 @@
 **config.env**then you will need to create a file call config.env in which you will store environment variables and store your PORT and database URL in it
 
 **package.json**this json file contain scripts which you have added keywords and dependencies which you have installed
+
+# dependencies
+dependencies youll need to install
+
+1) npm install express
+2) npm install mongoose
+3) npm install mongoose
+4) npm install dotenv
+5) npm install uniqid
